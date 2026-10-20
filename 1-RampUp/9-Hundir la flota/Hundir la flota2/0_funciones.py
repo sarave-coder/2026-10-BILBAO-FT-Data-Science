@@ -56,8 +56,8 @@ class Tablero:
             for _ in range(cantidad):
                 self.colocar_barco(tamaño)
 
-                
-# Disparar a tableros
+
+# Disparar a tableros SEGUIR REVISIÓN AQUÍ
 
     def disparar(self, fila, col):
         if self.tablero[fila][col] == var.BARCO:

@@ -19,7 +19,7 @@ BARCOS = [
 
 # SÍMBOLOS DEL TABLERO
 # =========================
-AGUA = "|"       # Casilla vacía
+AGUA = " "       # Casilla vacía
 BARCO = "B"      # Casilla ocupada por barco
 IMPACTO = "X"    # Casilla impactada
 FALLO = "O"      # Casilla disparada sin impacto
