@@ -1,7 +1,7 @@
 #Colocar barcos de manera aleatoria
 
 import random
-import Variables as var # importar variables creadas para el juego 
+import variables as var # importar variables creadas para el juego
 
 # Creación de una clase Tablero
 class Tablero:
@@ -38,7 +38,7 @@ class Tablero:
             col = random.randint(0, self.columnas - 1)
 
             if orientacion == "X":
-                # Comprobar si el baarco cabe y  la posición está libre
+                # Comprobar si el barco cabe y  la posición está libre
                 if col + tamaño <= self.columnas and all(self.tablero[fila][c] == self.AGUA for c in range(col, col + tamaño)):
                     for c in range(col, col + tamaño):
                         self.tablero[fila][c] = self.BARCO
@@ -68,35 +68,5 @@ class Tablero:
             self.tablero[fila][col] = var.FALLO
             print("Agua...")
             return False
-
-# Función principal del juego
-def juego():
-    print("¡Bienvenido a Hundir la Flota!")
-    tablero = Tablero()  # Creación del tablero
-    tablero.colocar_flota()  # Colocar los barcos
-    barcos_restantes = sum(tamaño * cantidad for _, tamaño, cantidad in var.BARCOS)
-
-    # El juego continúa hasta que no queden partes de barcos
-    while barcos_restantes > 0:
-        tablero.mostrar(ocultar_barcos=not var.MODO_DEBUG)
-
-        try:
-            fila = int(input("X: "))
-            col = int(input("Y: "))
-            if not (0 <= fila < var.TABLERO_FILAS and 0 <= col < var.TABLERO_COLUMNAS):
-                print("Coordenadas fuera de rango.")
-                continue
-            if tablero.disparar(fila, col):
-                barcos_restantes -= 1
-        except ValueError:
-            print("Introduce coordenadas numéricas.")
-
-    # Cuando barcos_restantes llega a 0, el juego termina
-    tablero.mostrar(ocultar_barcos=False)
-    print("¡Has hundido toda la flota!")
-    print("Juego terminado.")
-
-if __name__ == "__main__":
-    juego()
 
 
