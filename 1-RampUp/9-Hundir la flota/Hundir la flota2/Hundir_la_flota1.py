@@ -1,7 +1,7 @@
 #Colocar barcos de manera aleatoria
 
 import random
-#crear función barco FALTA
+
 
 class Barco:
 
