@@ -1,0 +1,159 @@
+SELECT *
+FROM customers
+WHERE customers.Country = "Brazil";
+
+SELECT *
+FROM employees
+WHERE employees.Title = "Sales Support Agent";
+
+SELECT *
+FROM tracks
+WHERE tracks.Composer ="AC/DC";
+
+SELECT FirstName, LastName, CustomerId, Country 
+FROM Customers
+WHERE Customers.Country != "USA";
+
+SELECT FirstName, LastName, City, Country, Email
+FROM employees
+WHERE employees.Title = "Sales Support Agent"; 
+
+SELECT DISTINCT BillingCountry 
+FROM invoices;
+
+SELECT DISTINCT State, count (customerId)
+FROM customers
+WHERE customers.Country = "USA"
+GROUP BY State;
+
+SELECT sum(quantity)
+FROM invoice_items
+WHERE invoice_items.InvoiceId ="37";
+
+SELECT count (trackId) as Cantidad_Canciones
+FROM tracks
+WHERE tracks.Composer ="AC/DC";
+
+SELECT sum(quantity) as Articulos_factura
+FROM invoice_items 
+GROUP BY InvoiceId;
+
+SELECT BillingCountry, count (InvoiceId)
+FROM invoices
+GROUP BY BillingCountry;
+
+SELECT strftime("%Y",invoicedate) as anyo, count (invoiceId)
+FROM invoices
+WHERE anyo in ("2009", "2011")
+GROUP BY anyo;
+
+SELECT count (invoiceId) as Facturas_totales
+FROM invoices
+WHERE strftime("%Y",invoicedate) BETWEEN "2009" AND "2011";
+
+SELECT Country, count (CustomerId)
+FROM customers
+WHERE customers.Country IN ("Spain", "Brazil")
+GROUP BY Country;
+
+SELECT *
+FROM tracks
+WHERE tracks.Name  LIKE "You%";
+
+SELECT C.FirstName, C.LastName, I.InvoiceId, I.InvoiceDate, I.BillingCountry
+FROM invoices AS I
+INNER JOIN customers AS C
+ON C.customerid = I.customerid 
+WHERE C.Country = "Brazil";
+
+SELECT DISTINCT E.FirstName, E.LastName, I.InvoiceId
+FROM employees AS E
+INNER JOIN customers AS C
+ON C.SupportRepId = E.EmployeeId
+INNER JOIN invoices AS I
+ON I.CustomerId = C.CustomerId
+WHERE E.Title = "Sales Support Agent"
+ORDER BY I.InvoiceId;
+
+SELECT customers.FirstName, customers.LastName, customers.Country, employees.FirstName, employees.LastName, sum (invoices.Total)
+FROM customers
+INNER JOIN employees
+ON customers.SupportRepId = employees.EmployeeId
+INNER JOIN invoices
+ON invoices.CustomerId = customers.CustomerId
+GROUP BY customers.CustomerId
+ORDER BY employees.FirstName;
+
+SELECT invoice_items.InvoiceId, invoices.InvoiceId, tracks.Name
+FROM invoice_items
+INNER JOIN invoices
+ON invoice_items.InvoiceId = invoices.InvoiceId
+INNER JOIN tracks
+ON tracks.TrackId = invoice_items.TrackId
+GROUP BY tracks.Name;
+
+SELECT DISTINCT tracks.Name, media_types.Name AS "Formato", albums.Title AS "Album", genres.Name AS "Género"
+FROM tracks
+LEFT JOIN media_types
+ON tracks.MediaTypeId = media_types.MediaTypeId
+LEFT JOIN albums
+ON albums.AlbumId = tracks.AlbumId
+LEFT JOIN genres 
+ON genres.GenreId = tracks.GenreId;
+
+SELECT DISTINCT playlists.Name, count (tracks.TrackId)
+FROM tracks
+LEFT JOIN playlist_track
+ON tracks.TrackId = playlist_track.TrackId
+LEFT JOIN playlists
+ON playlists.PlaylistId = playlist_track.PlaylistId
+GROUP BY playlists.PlaylistId;
+
+SELECT employees.FirstName, sum (invoices.Total)
+FROM customers
+INNER JOIN employees
+ON customers.SupportRepId = employees.EmployeeId
+INNER JOIN invoices
+ON invoices.CustomerId = customers.CustomerId
+GROUP BY employees.EmployeeId;
+
+SELECT employees.FirstName, strftime("%Y",invoicedate) as anyo, sum (invoices.Total)
+FROM customers
+INNER JOIN employees
+ON customers.SupportRepId = employees.EmployeeId
+INNER JOIN invoices
+ON invoices.CustomerId = customers.CustomerId
+WHERE anyo in ("2009")
+GROUP BY employees.EmployeeId;
+
+SELECT artists.Name, sum(invoice_items.UnitPrice * invoice_items.Quantity) AS "Ventas"
+FROM artists
+LEFT JOIN albums 
+ON artists.ArtistId = albums.ArtistId
+LEFT JOIN tracks
+ON tracks.AlbumId = albums.AlbumId
+LEFT JOIN invoice_items
+ON tracks.TrackId = invoice_items.TrackId
+GROUP BY artists.ArtistId;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
