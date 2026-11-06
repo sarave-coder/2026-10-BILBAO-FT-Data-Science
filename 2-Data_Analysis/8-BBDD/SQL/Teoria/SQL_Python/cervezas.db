@@ -1,0 +1,84 @@
+--1
+SELECT DISTINCT empleados.Nombre
+FROM EMPLEADOS
+INNER JOIN REPARTO
+ON empleados.CodE = reparto.CodE
+INNER JOIN BARES
+ON reparto.CodB = bares.CodB
+WHERE bares.Nombre = "Stop" AND reparto.Fecha BETWEEN "2005-10-17" AND "2005-10-23";
+
+--2
+SELECT DISTINCT bares.Cif, bares.Nombre
+FROM bares
+INNER JOIN REPARTO
+ON bares.Codb = reparto.Codb
+INNER JOIN cervezas
+ON reparto.Codc = cervezas.Codc
+WHERE cervezas.envase = "Botella" AND cervezas.capacidad < 1
+ORDER BY bares.Localidad;
+
+--3
+SELECT DISTINCT bares.Nombre, cervezas.envase, cervezas.capacidad, reparto.Fecha, reparto.cantidad
+FROM empleados
+INNER JOIN REPARTO
+ON empleados.Code = reparto.Code
+INNER JOIN cervezas
+ON reparto.Codc = cervezas.Codc
+INNER JOIN bares
+ON reparto.Codb = bares.Codb
+WHERE empleados.Nombre = "Prudencio Caminero";
+
+--4
+SELECT DISTINCT bares.Nombre
+FROM bares
+INNER JOIN REPARTO
+ON bares.Codb = reparto.Codb
+INNER JOIN cervezas
+ON reparto.Codc = cervezas.Codc
+WHERE cervezas.envase = "Botella" AND cervezas.Capacidad IN (0.2,0.33);
+
+--5
+SELECT empleados.Nombre
+FROM empleados
+INNER JOIN REPARTO
+ON empleados.Code = reparto.Code
+INNER JOIN cervezas
+ON reparto.Codc = cervezas.Codc
+INNER JOIN bares
+ON reparto.Codb = bares.Codb
+WHERE cervezas.envase = "Botella" AND bares.Nombre = "Stop" and bares.Nombre = "Las Vegas";
+
+--6
+SELECT empleados.Nombre, count(reparto.fecha)
+FROM empleados
+INNER JOIN REPARTO
+ON empleados.Code = reparto.Code
+INNER JOIN bares
+ON reparto.Codb = bares.Codb
+WHERE bares.localidad != "Villa Botijo"
+group by reparto.fecha;
+
+--7
+SELECT bares.Nombre, bares.localidad, sum(reparto.Cantidad * cervezas.Capacidad) as cantidad
+FROM bares
+INNER JOIN REPARTO
+ON bares.Codb = reparto.Codb
+INNER JOIN cervezas
+ON reparto.Codc = cervezas.Codc
+group by cantidad
+order by cantidad desc
+limit 1;
+
+---8
+SELECT B.CodB, B.Nombre, B.Localidad
+FROM BARES B
+JOIN REPARTO R ON B.CodB = R.CodB
+JOIN CERVEZAS C ON R.CodC = C.CodC
+WHERE C.Envase = ‘Botella’
+AND C.Capacidad < 1
+GROUP BY B.CodB, B.Nombre, B.Localidad
+HAVING COUNT(DISTINCT C.CodC) = (
+SELECT COUNT(*)
+FROM CERVEZAS
+WHERE Envase = ‘Botella’ AND Capacidad < 1);
+
